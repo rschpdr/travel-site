@@ -1,5 +1,7 @@
 import $ from 'jquery';
 import waypoints from '../../../../node_modules/waypoints/lib/noframework.waypoints';
+import smoothScroll from 'jquery-smooth-scroll';
+
 
 class StickyHeader {
   constructor() {
@@ -9,6 +11,11 @@ class StickyHeader {
     this.pageSections = $(".page-section");
     this.headerLinks = $(".primary-nav a");
     this.createPageSectionWaypoints();
+    this.addSmoothScrolling();
+ }
+
+ addSmoothScrolling() {
+   this.headerLinks.smoothScroll();
  }
 
  createHeaderWaypoint() {
@@ -37,9 +44,19 @@ class StickyHeader {
            that.headerLinks.removeClass("is-current-link");
            $(matchingHeaderlink).addClass("is-current-link");
          }
-         
        },
        offset: "18%"
+     });
+     new Waypoint({
+       element: currentPageSection,
+       handler: function(direction) {
+         if (direction == "up") {
+           var matchingHeaderlink = currentPageSection.getAttribute("data-matching-link");
+           that.headerLinks.removeClass("is-current-link");
+           $(matchingHeaderlink).addClass("is-current-link");
+         }
+       },
+       offset: "-40%"
      });
    });
  }
